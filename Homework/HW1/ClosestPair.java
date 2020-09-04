@@ -1,4 +1,8 @@
-/** A main class for the Closest Pair algorithms
+/** 
+ * Eli Monzon
+ * 9.1.20
+ * 
+ * 	A main class for the Closest Pair algorithms
  *  Programming assignment for
  *  CSI403 Algorithms and Data Structures
  *  University at Albany - SUNY
@@ -8,9 +12,9 @@
  * 2) getCPDivideAndConquer()
  * As discussed in class and in the assignment part (a)
  */
-package closestpair;
-import java.util.HashSet;
 
+import java.util.HashSet;
+////import java.util.Arrays;
 public class ClosestPair {
 	
 	/** TODO: IMPLEMENT 
@@ -20,8 +24,25 @@ public class ClosestPair {
 	 *  ONLY THE BODY WILL BE CONSIDERED FOR GRADING
 	 */
 	public static Point[] getCPBruteForce (Point[] pts)  {
-		//TODO: Implement this method for part (a) of the assignment 
-		return null;
+		Point[] returnArr = new Point[2];
+		double smallDist = 500000;
+		for (int i = 0; i < pts.length ; i++){
+
+			
+			for (int j = 0; j < pts.length; j++) {
+				if (j == i)
+					continue;
+				//on first iteration or when smallest distance is > the current comparisons distance
+				if(j == 0 || smallDist >= pts[i].dist(pts[j])){ 
+					smallDist = pts[i].dist(pts[j]);
+					returnArr[0] = pts[i];
+					returnArr[1] = pts[j];
+				}
+				////System.err.println(smallDist + "|p : "+ pts[i].toString() + " ~ q : "+ pts[j].toString());
+			}
+		}
+		////System.err.println(Arrays.toString(returnArr));
+		return returnArr;
 	}
 	
 	/** A driver for the Divide-And-Conquer method for the closest pair

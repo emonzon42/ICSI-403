@@ -11,7 +11,7 @@
  * program.
  */
 
-package closestpair;
+
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -42,7 +42,7 @@ public class Point{
 	 * Prints a string representation of a point
 	 */
 	public String toString() {
-		return x.toString() + ":" + y.toString();
+		return "("+x.toString() + "," + y.toString()+ ")";
 	}
 	
 	/** 

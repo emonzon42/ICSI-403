@@ -8,7 +8,7 @@
  * program.
  */
 
-package closestpair;
+
 public class ClosestPairDriver {
 	
 	/** A unit test for BruteForce on five points
@@ -97,6 +97,7 @@ public class ClosestPairDriver {
 	private static void runnningTimeComparison() {
 		//TODO: Implement this method for part (b) of the assignment 
 	}	
+	
 	
 	/** Driver class for tests
 	 */
