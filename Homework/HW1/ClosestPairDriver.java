@@ -1,3 +1,5 @@
+////import java.util.Arrays;
+
 /** A driver class for the Closest Pair algorithms
  *  Programming assignment for
  *  CSI403 Algorithms and Data Structures
@@ -42,6 +44,7 @@ public class ClosestPairDriver {
 		
 		Point[] cp = ClosestPair.getCPDivideAndConquer(pts);
 		Double actual = (new Point(0.0,0.0)).dist(new Point(0.2,0.2));
+		//System.err.println(Arrays.toString(cp));
 		if(actual.equals(cp[0].dist(cp[1]))) 
 			return true;
 		else
@@ -68,7 +71,9 @@ public class ClosestPairDriver {
 		Point[] cpDQ = ClosestPair.getCPDivideAndConquer(pts);
 		tock = System.currentTimeMillis();
 		System.out.println("Divide-And-Conquer: " + numpoints + " (" + (tock-tick) + "ms)");
-		
+		//System.out.println(Arrays.toString(pts));
+		//System.err.println("bf: " + Arrays.toString(cpBF) + "---> dist: "+cpBF[0].dist(cpBF[1]));
+		//System.err.println("dc: " + Arrays.toString(cpDQ)+ "---> dist: "+cpDQ[0].dist(cpDQ[1]));
 		// Check if distances of pairs agree
 		if(cpBF[0].dist(cpBF[1]).equals(cpDQ[0].dist(cpDQ[1]))) 
 			return true;
@@ -95,7 +100,53 @@ public class ClosestPairDriver {
 	 *  Use the provided random point generator getRandomPoints()
 	 */
 	private static void runnningTimeComparison() {
-		//TODO: Implement this method for part (b) of the assignment 
+		//10 random points:
+		long tick = System.currentTimeMillis();
+		ClosestPair.getCPBruteForce(getRandomPoints(10));
+		long tock = System.currentTimeMillis();
+		System.out.println("Brute Force, 10 points " + "(" + (tock-tick) + "ms)");
+
+		tick = System.currentTimeMillis();
+		ClosestPair.getCPDivideAndConquer(getRandomPoints(10));
+		tock = System.currentTimeMillis();
+		System.out.println("DivideConquer, 10 points " + "(" + (tock-tick) + "ms)");
+		System.out.println();
+
+		//100 random points:
+		tick = System.currentTimeMillis();
+		ClosestPair.getCPBruteForce(getRandomPoints(100));
+		tock = System.currentTimeMillis();
+		System.out.println("Brute Force, 100 points " + "(" + (tock-tick) + "ms)");
+
+		tick = System.currentTimeMillis();
+		ClosestPair.getCPDivideAndConquer(getRandomPoints(100));
+		tock = System.currentTimeMillis();
+		System.out.println("DivideConquer, 100 points " + "(" + (tock-tick) + "ms)");
+		System.out.println();
+
+		//1000 random points:
+		tick = System.currentTimeMillis();
+		ClosestPair.getCPBruteForce(getRandomPoints(1000));
+		tock = System.currentTimeMillis();
+		System.out.println("Brute Force, 1000 points " + "(" + (tock-tick) + "ms)");
+
+		tick = System.currentTimeMillis();
+		ClosestPair.getCPDivideAndConquer(getRandomPoints(1000));
+		tock = System.currentTimeMillis();
+		System.out.println("DivideConquer, 1000 points " + "(" + (tock-tick) + "ms)");
+		System.out.println();
+		
+		//10000 random points:
+		tick = System.currentTimeMillis();
+		ClosestPair.getCPBruteForce(getRandomPoints(10000));
+		tock = System.currentTimeMillis();
+		System.out.println("Brute Force, 10000 points " + "(" + (tock-tick) + "ms)");
+
+		tick = System.currentTimeMillis();
+		ClosestPair.getCPDivideAndConquer(getRandomPoints(10000));
+		tock = System.currentTimeMillis();
+		System.out.println("DivideConquer, 10000 points " + "(" + (tock-tick) + "ms)");
+		System.out.println();
 	}	
 	
 	
@@ -115,11 +166,12 @@ public class ClosestPairDriver {
 			System.err.println("Test Divide-And-Conquer: FAILED");
 		
 		int numpoints  = 10000;
-		if(testRandom(numpoints)) 
+		if(testRandom(numpoints)) //TODO!: fails
 			System.out.println("Test "+ numpoints +" Points: SUCCESS");
 		else 
 			System.err.println("Test "+ numpoints +" Points: FAILED");
 		
+		System.out.println();
 		// Running time comparison
 		runnningTimeComparison();
 		
