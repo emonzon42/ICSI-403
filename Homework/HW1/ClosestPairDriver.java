@@ -92,7 +92,7 @@ public class ClosestPairDriver {
 		return pts;
 	}	
 	
-	/** TODO: IMPLEMENT
+	/** 
 	 *  Runs and times the BruteForce and Divide-And-Conquer  
 	 *  algorithms for 10,100,1000 and 10000 random points
 	 *  Should print out using stdout the running times for both
@@ -166,7 +166,7 @@ public class ClosestPairDriver {
 			System.err.println("Test Divide-And-Conquer: FAILED");
 		
 		int numpoints  = 10000;
-		if(testRandom(numpoints)) //TODO!: fails
+		if(testRandom(numpoints))
 			System.out.println("Test "+ numpoints +" Points: SUCCESS");
 		else 
 			System.err.println("Test "+ numpoints +" Points: FAILED");

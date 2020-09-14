@@ -16,7 +16,7 @@
 ////import java.util.Arrays;
 public class ClosestPair {
 	
-	/** TODO: IMPLEMENT 
+	/**
 	 *  A brute force method for the closest pair
 	 *  @returns an array of exactly the two closest points
 	 *  IMPORTANT: DO NOT CHANGE THIS METHOD SIGNATURE,
@@ -55,7 +55,7 @@ public class ClosestPair {
 		return getCPDivideAndConquer(ptsX, ptsY);
 	}
 	
-	/** TODO: IMPLEMENT 
+	/**
 	 *  A Divide-And-Conquer method for the closest pair
 	 *  takes as input the points sorted by increasing x
 	 *  and y coordinates in ptsX and ptsY respectively
