@@ -13,7 +13,6 @@
  * As discussed in class and in the assignment part (a)
  */
 
-import java.util.HashSet;
 ////import java.util.Arrays;
 public class ClosestPair {
 	
@@ -71,7 +70,7 @@ public class ClosestPair {
 		} else {
 			Point[] pl = getCPDivideAndConquer(subarray(ptsY, 0, ptsX.length/2), subarray(ptsY, 0, ptsY.length/2));
 			Point[] pr = getCPDivideAndConquer(subarray(ptsX, ptsX.length/2, ptsX.length), subarray(ptsY, ptsY.length/2, ptsY.length));	
-			double delta = min(pl,pr);
+			double delta = min(pl,pr); //smallest distance of the two points
 			Point[] ps = closestSplitPair(ptsX, ptsY, delta);
 			////System.err.println("pL: "+ Arrays.toString(pl));
 			////System.err.println("pR: "+ Arrays.toString(pr));
@@ -89,7 +88,7 @@ public class ClosestPair {
 	//returns the pair of points closest to eachother within distance delta
 	private static Point[] closestSplitPair(Point[] px, Point[] py, double delta){
 		double xbar = px[px.length/2].x;
-		Point[] sy = new Point[py.length];
+		Point[] sy = new Point[py.length]; //the vertical strip centered at xbar with width of 2delta
 
 		//fills sy with all points in py within delta of vertical strip xbar
 		for(int i = 0, j=0; i < py.length; i++){
@@ -97,10 +96,11 @@ public class ClosestPair {
 				sy[j] = py[i];
 				j++;
 			}
-			if(i == py.length-1 && j<i){  //deallocates null space in sy
-				dealloc(sy, j);
+			if(i == py.length-1 && j<i){  //removes null space in sy past j
+				freeSpace(sy, j);
 			}
 		}
+
 		double bestDist = delta;
 		Point[] bestPair = new Point[2];
 		////System.err.println("sY: "+ Arrays.toString(sy));
@@ -112,7 +112,7 @@ public class ClosestPair {
 				if(i == i+j)
 					continue;
 				Point p = sy[i], q = sy[i+j];
-				///System.err.println(bestDist + "|p : "+ p.toString() + " ~ q : "+ q.toString());
+				////System.err.println(bestDist + "|p : "+ p.toString() + " ~ q : "+ q.toString());
 				if(p == null ||  q == null)
 					break;
 				if(p.dist(q) < bestDist){
@@ -143,14 +143,13 @@ public class ClosestPair {
 			return p2;
 	}
 
-	//deallocates space after arr[n] in array
-	private static void dealloc(Point[] arr, int n){
+	//frees space after arr[n] in array (sets the array to a copy of itself excluding points arr[j>n])
+	private static void freeSpace(Point[] arr, int n){
 		arr = subarray(arr, 0, n);
 	}
 
 	//returns a subarray of original[from,..,to]
-	private static Point[] subarray(Point[] original, int from, int to)
-   {
+	private static Point[] subarray(Point[] original, int from, int to){
     if (from > to)
       throw new IllegalArgumentException("The initial index is after " +
                       "the final index.");
