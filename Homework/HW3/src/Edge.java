@@ -5,13 +5,9 @@
  * Edge
  */
 
-public class Edge{
+public class Edge implements Comparable<Edge>{
 	
-	/** 
-	 * public members for coordinates
-	 */
-	public final Integer u, v;
-	public final Integer cost;
+	public final Integer u, v, cost;
 	
 	/** 
 	 * Constructor
@@ -23,10 +19,13 @@ public class Edge{
 	}
 	
 	/** 
-	 * Prints a string representation of a point
+	 * Prints a string representation of the edge
 	 */
 	public String toString() {
-		return "("+u.toString() + "," + v.toString()+ ")";
+		return "("+u.toString() + "," + v.toString()+ "): "+ cost.toString();
 	}
 	
+	public int compareTo(Edge e) {
+        return cost.compareTo(e.cost);
+    }
 }

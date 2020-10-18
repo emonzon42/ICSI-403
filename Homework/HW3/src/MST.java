@@ -17,33 +17,29 @@ public final class MST {
             fr.close();
             return null;
         }
-        Edge edges[] = new Edge[10000];
+        LinkedList<Edge> edges = new LinkedList<>();
         HashSet<Integer> nodes = new HashSet<Integer>();
         fr.nextLine();
         
-        int i = 0;
         while (fr.hasNextLine()){
             String line[] = fr.nextLine().split(" ");
-            edges[i] = new Edge(Integer.parseInt(line[0]), Integer.parseInt(line[1]),Integer.parseInt(line[2].split("\n")[0]));
+            edges.add(new Edge(Integer.parseInt(line[0]), Integer.parseInt(line[1]),Integer.parseInt(line[2].split("\n")[0])));
             
             nodes.add(Integer.parseInt(line[0]));
-            nodes.add(Integer.parseInt(line[1]));
-
-            i++;
-            if (!fr.hasNextLine())
-                freeSpace(edges, i);
+            nodes.add(Integer.parseInt(line[1]));      
         }
         System.out.println(nodes.toString());
+        System.out.println(edges.toString());
         fr.close();
         return new Graph(nodes, edges);
     }
 
     public static void kruskal(Graph G){
-
         long tick = System.currentTimeMillis();
-        //Arrays.sort(edges);
+        Collections.sort(G.edges);
+        System.out.println(G.edges.toString());
         HashSet<Integer> T = new HashSet<>();
-
+        
         while (true) {
            //!stuff 
         }
@@ -52,8 +48,4 @@ public final class MST {
        //System.out.println("Execution Time: (" + (tock-tick) + "ms)");
     }
 
-    //frees space after arr[n] in array (sets the array to a copy of itself excluding points arr[j>n])
-    private static <T> void freeSpace(T[] arr, int n) {
-		arr = Arrays.copyOfRange(arr, 0, n);
-	}
 }

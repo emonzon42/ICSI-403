@@ -4,18 +4,18 @@
  * CSI 403
  * Graph
  */
-import java.util.HashSet;
+import java.util.*;
 public class Graph {
-    public HashSet<Integer> nodes;
-    public Edge[] edges;
+    public Set<Integer> nodes;
+    public List<Edge> edges;
 
-    public Graph(HashSet<Integer> _nodes, Edge[] _edges){
+    public Graph(Set<Integer> _nodes, List<Edge> _edges){
         nodes = _nodes;
         edges = _edges;
     }
 
     public Graph(){
         nodes = new HashSet<Integer>();
-        edges = new Edge[1];
+        edges = new LinkedList<Edge>();
     }
 }
