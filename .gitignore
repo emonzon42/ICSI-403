@@ -4,3 +4,12 @@
 
 ~$*
 .vscode
+
+#converted into pdfs
+*.docx
+
+#for submission
+*.zip
+
+#Alias folder
+_back
