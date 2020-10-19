@@ -28,24 +28,39 @@ public final class MST {
             nodes.add(Integer.parseInt(line[0]));
             nodes.add(Integer.parseInt(line[1]));      
         }
-        System.out.println(nodes.toString());
-        System.out.println(edges.toString());
         fr.close();
         return new Graph(nodes, edges);
     }
 
     public static void kruskal(Graph G){
         long tick = System.currentTimeMillis();
-        Collections.sort(G.edges);
+        Collections.sort(G.edges); //sorts by cost
         System.out.println(G.edges.toString());
-        HashSet<Integer> T = new HashSet<>();
-        
-        while (true) {
-           //!stuff 
-        }
-        //long tock = System.currentTimeMillis();
+        HashSet<Edge> T = new HashSet<>();
+        while (G.edges.size() >= 2) {
+            Edge currEdge = G.edges.removeFirst();
+            
+            if(!nodeExists(currEdge,T))
+                T.add(currEdge);
+            
 
-       //System.out.println("Execution Time: (" + (tock-tick) + "ms)");
+           //!go thru
+        }
+        long tock = System.currentTimeMillis();
+        System.out.println(T.toString());
+       System.out.println("Execution Time: (" + (tock-tick) + "ms)");
+    }
+
+    //returns whether or not nodes from e is present in a set of edges
+    private static boolean nodeExists(Edge e, HashSet<Edge> T){
+        //todo: fix this function so that it only returns true if it detects a cycle
+        for (Edge edge : T){
+            if (edge.u.equals(e.u))
+                return true;
+            else if(edge.v.equals(e.v))
+                return true;
+        }
+        return false;
     }
 
 }

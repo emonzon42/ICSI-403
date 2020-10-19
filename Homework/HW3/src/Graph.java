@@ -6,10 +6,10 @@
  */
 import java.util.*;
 public class Graph {
-    public Set<Integer> nodes;
-    public List<Edge> edges;
+    public HashSet<Integer> nodes;
+    public LinkedList<Edge> edges;
 
-    public Graph(Set<Integer> _nodes, List<Edge> _edges){
+    public Graph(HashSet<Integer> _nodes, LinkedList<Edge> _edges){
         nodes = _nodes;
         edges = _edges;
     }
