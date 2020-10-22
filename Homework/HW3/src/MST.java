@@ -10,7 +10,6 @@ public final class MST {
     
     //parses through file and returns the graph in question 
     public static Graph gothru(File file) throws FileNotFoundException{
-        //Todo: read input 
         Scanner fr = new Scanner(file);
         if(!fr.hasNextLine()){
             System.out.println("Unexpected/empty file, please format correctly");
@@ -32,10 +31,24 @@ public final class MST {
         return new Graph(nodes, edges);
     }
 
-    public static void kruskal(Graph G){
+    public static HashSet<Edge> prim(Graph G){
+        long tick = System.currentTimeMillis();
+        HashSet<Edge> T = new HashSet<>();
+        
+        PriorityQueue<Integer> unvisted = new PriorityQueue<>();
+        
+
+        long tock = System.currentTimeMillis();
+        System.out.println("Execution Time: (" + (tock-tick) + "ms)");
+        System.out.println("Total cost of edges: " + totalCost(T));
+        return T;
+    }
+
+    //Kruskal's algorithm for a MST
+    public static HashSet<Edge> kruskal(Graph G){
         long tick = System.currentTimeMillis();
         Collections.sort(G.edges); //sorts by cost
-        System.out.println(G.edges.toString());
+
         HashSet<Edge> T = new HashSet<>();
 
         HashMap <Integer,DisjointSet> nodes = new HashMap<>();
@@ -51,13 +64,23 @@ public final class MST {
             }
         }
         long tock = System.currentTimeMillis();
-        System.out.println(T.toString());
         System.out.println("Execution Time: (" + (tock-tick) + "ms)");
+        System.out.println("Total cost of edges: " + totalCost(T));
+        
+        return T;
+    }
+
+    private static int totalCost(HashSet<Edge> edges){
+        int count = 0;
+        for (Edge edge : edges) {
+            count += edge.cost;
+        }
+        return count;
     }
 
     private static void union(HashMap <Integer,DisjointSet> nodes, int a, int b){
         Integer x = find(nodes, a);
-        int y = find(nodes, b);
+        Integer y = find(nodes, b);
         nodes.get(x).parent = y;
     }
 
