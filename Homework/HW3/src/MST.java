@@ -37,19 +37,40 @@ public final class MST {
         Collections.sort(G.edges); //sorts by cost
         System.out.println(G.edges.toString());
         HashSet<Edge> T = new HashSet<>();
+
+        HashMap <Integer,DisjointSet> nodes = new HashMap<>();
+        for (Integer node : G.nodes)
+            nodes.put(node, new DisjointSet(node));
+
         while (G.edges.size() >= 2) {
             Edge currEdge = G.edges.removeFirst();
             
-            if(!nodeExists(currEdge,T))
+            if (find(nodes, currEdge.u) != find(nodes, currEdge.v)){
+                union(nodes, currEdge.u, currEdge.v);
                 T.add(currEdge);
-            
-
-           //!go thru
+            }
         }
         long tock = System.currentTimeMillis();
         System.out.println(T.toString());
-       System.out.println("Execution Time: (" + (tock-tick) + "ms)");
+        System.out.println("Execution Time: (" + (tock-tick) + "ms)");
     }
+
+    private static void union(HashMap <Integer,DisjointSet> nodes, int a, int b){
+        Integer x = find(nodes, a);
+        int y = find(nodes, b);
+        nodes.get(x).parent = y;
+    }
+
+    private static Integer find(HashMap <Integer,DisjointSet> nodes, int key){
+        Integer parent = nodes.get(key).parent;
+        
+        if (parent.equals(key))
+            return key;
+        else
+            return find(nodes, parent);
+
+    }
+    
 
     //returns whether or not nodes from e is present in a set of edges
     private static boolean nodeExists(Edge e, HashSet<Edge> T){
