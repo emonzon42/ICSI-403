@@ -6,15 +6,23 @@
  */
 public class DisjointSet {
     
-    public Integer key, parent;
+    public Node key, parent;
 
-    public DisjointSet(Integer key, Integer parent){
+    public DisjointSet(Node key, Node parent){
         this.key = key;
         this.parent = parent;
     }
 
-    public DisjointSet(Integer key){
+    public DisjointSet(Node key){
         this.key = key;
-        this.parent =  key;
+        this.parent = key;
+    }
+
+    public DisjointSet(Integer key){
+        this(new Node(key));
+    }
+
+    public DisjointSet(Integer key, Integer parent){
+        this(new Node(key),new Node(parent));
     }
 }

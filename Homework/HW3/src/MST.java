@@ -19,15 +19,15 @@ public final class MST {
             return null;
         }
         LinkedList<Edge> edges = new LinkedList<>();
-        HashSet<Integer> nodes = new HashSet<Integer>();
+        HashSet<Node> nodes = new HashSet<Node>();
         fr.nextLine();
         
         while (fr.hasNextLine()){
             String line[] = fr.nextLine().split(" ");
             edges.add(new Edge(Integer.parseInt(line[0]), Integer.parseInt(line[1]),Integer.parseInt(line[2].split("\n")[0])));
             
-            nodes.add(Integer.parseInt(line[0]));
-            nodes.add(Integer.parseInt(line[1]));      
+            nodes.add(new Node(Integer.parseInt(line[0])));
+            nodes.add(new Node(Integer.parseInt(line[1])));      
         }
         fr.close();
         return new Graph(nodes, edges);
@@ -36,19 +36,19 @@ public final class MST {
     public static HashSet<Edge> prim(Graph G){
         long tick = System.currentTimeMillis();
         HashSet<Edge> T = new HashSet<>();
-        PriorityQueue<Integer> unvisted = new PriorityQueue<>(G.nodes);
-        boolean[] visted = new boolean[G.nodes.size() + unvisted.peek()];
-        double key[] = new double[G.nodes.size() + unvisted.peek()];
+        PriorityQueue<Node> unvisted = new PriorityQueue<>(G.nodes);
+        boolean[] visted = new boolean[G.nodes.size() + unvisted.peek().key];
+        double key[] = new double[G.nodes.size() + unvisted.peek().key];
 
-        for (int u : unvisted) {
-            key[u] = Double.POSITIVE_INFINITY;
+        for (Node u : unvisted) {
+            key[u.key] = Double.POSITIVE_INFINITY;
         }
-        key[unvisted.peek()] = 0;
-        visted[unvisted.peek()] = true;
+        key[unvisted.peek().key] = 0;
+        visted[unvisted.peek().key] = true;
         //System.out.println(unvisted.toString());
 
         while (!unvisted.isEmpty()){
-            int currentNode = unvisted.poll(); //! doesn't extract the closest node
+            Node currentNode = unvisted.poll(); //! doesn't extract the closest node
             double lowestCost = Double.POSITIVE_INFINITY;
             Edge best = null;
             
@@ -57,15 +57,15 @@ public final class MST {
                 //System.out.println(e.toString() + " | "+ lowestCost + " | "+ currentNode);
                // if(visted[e.u] && visted[e.v])continue;
                 
-                if (e.u == currentNode && e.cost < key[e.v]){
+                if (e.u == currentNode && e.cost < key[e.v.key]){
                     //System.out.println(" ....changes to be made");
                     //System.out.println(e.cost+" < "+ lowestCost + ": " + (e.cost < lowestCost));
                     best = e;   
-                    key[e.v] = e.cost;
+                    key[e.v.key] = e.cost;
                     
-                }else if(e.v == currentNode && e.cost < key[e.u]){
+                }else if(e.v == currentNode && e.cost < key[e.u.key]){
                     best = e;
-                    key[e.u] = e.cost;
+                    key[e.u.key] = e.cost;
                     
                 }
             }
@@ -98,14 +98,14 @@ public final class MST {
         HashSet<Edge> T = new HashSet<>();
 
         HashMap <Integer,DisjointSet> nodes = new HashMap<>();
-        for (Integer node : G.nodes)
-            nodes.put(node, new DisjointSet(node));
+        for (Node node : G.nodes)
+            nodes.put(node.key, new DisjointSet(node));
 
         while (edges.size() >= 2) {
             Edge currEdge = edges.removeFirst();
             
-            if (find(nodes, currEdge.u) != find(nodes, currEdge.v)){
-                union(nodes, currEdge.u, currEdge.v);
+            if (find(nodes, currEdge.u.key) != find(nodes, currEdge.v.key)){
+                union(nodes, currEdge.u.key, currEdge.v.key);
                 T.add(currEdge);
             }
         }
@@ -125,18 +125,18 @@ public final class MST {
     }
 
     private static void union(HashMap <Integer,DisjointSet> nodes, int a, int b){
-        Integer x = find(nodes, a);
-        Integer y = find(nodes, b);
-        nodes.get(x).parent = y;
+        Node x = find(nodes, a);
+        Node y = find(nodes, b);
+        nodes.get(x.key).parent = y;
     }
 
-    private static Integer find(HashMap <Integer,DisjointSet> nodes, int key){
-        Integer parent = nodes.get(key).parent;
+    private static Node find(HashMap <Integer,DisjointSet> nodes, int key){
+        Node parent = nodes.get(key).parent;
         
-        if (parent.equals(key))
-            return key;
+        if (parent.key.equals(key))
+            return parent;
         else
-            return find(nodes, parent);
+            return find(nodes, parent.key);
 
     }
 }

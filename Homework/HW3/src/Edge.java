@@ -7,15 +7,20 @@
 
 public class Edge implements Comparable<Edge>{
 	
-	public final Integer u, v, cost;
-	
+	public final Node u, v;
+	public final Integer cost;
+
 	/** 
 	 * Constructor
 	 */
-	public Edge(Integer u, Integer v, Integer cost) {
+	public Edge(Node u, Node v, Integer cost) {
 		this.u = u;
 		this.v = v;
 		this.cost = cost;
+	}
+
+	public Edge(Integer u, Integer v, Integer cost) {
+		this(new Node(u), new Node(v), cost);
 	}
 	
 	/** 
