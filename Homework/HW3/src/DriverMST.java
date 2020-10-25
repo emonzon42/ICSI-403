@@ -6,11 +6,11 @@
  * Driver to demonstrate usage of MST
  */
 import java.io.*;
-import java.util.HashSet;
+import java.util.Collection;
 public class DriverMST {
 
     //* javac -d "Homework/HW3/bin" "Homework/HW3/src/DriverMST.java" Homework/HW3/infile.txt
-    private static final String TEST_FILE = "Homework/HW3/infile3.txt";
+    private static final String TEST_FILE = "Homework/HW3/infile.txt";
     public static void main(String[] args) {
         
        /* if (args.length < 1){
@@ -29,7 +29,7 @@ public class DriverMST {
             return;
         }
         System.out.println("Now executing Kruskal's algorithm...");
-        HashSet<Edge> T = MST.kruskal(g);
+        Collection<Edge> T = MST.kruskal(g);
         //if (args.length > 1 && args[1] == "-e")
             System.out.println("Edges: " + T.toString());
 

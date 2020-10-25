@@ -13,6 +13,10 @@ public class Node implements Comparable<Node>{
         this(key, null);
     }
 
+    public Node(Node node, Boolean visted){
+        this(node.key, visted);
+    }
+
     public Node(Integer key, Boolean visted){
         this.key = key;
         this.visted = visted;
@@ -20,6 +24,10 @@ public class Node implements Comparable<Node>{
 
     public int compareTo(Node e) {
         return key.compareTo(e.key);
+    }
+
+    public boolean equals(Node e){
+        return key.equals(e.key);
     }
 
     public String toString(){
