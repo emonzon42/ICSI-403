@@ -32,10 +32,11 @@ public final class MST {
         fr.close();
         return new Graph(nodes, edges);
     }
-
-    public static Collection<Edge> prim(Graph G){
+    
+    //Prim's algorithm for a MST
+    public static Collection<Edge> prim(Graph G){//!Returns a different mst from kruskal (figure out how to throw out edges and replace them with better ones)
         long tick = System.currentTimeMillis();
-        LinkedList<Edge> T = new LinkedList<>();
+        HashSet<Edge> T = new HashSet<>();
      //   PriorityQueue<Node> unvisted = new PriorityQueue<>(G.nodes);
      //   boolean[] visted = new boolean[G.nodes.size() + unvisted.peek().key];
      //   double key[] = new double[G.nodes.size() + unvisted.peek().key];
@@ -49,44 +50,38 @@ public final class MST {
         Node currentNode = nodes.get(G.edges.getFirst().u.key);
 
         while (nodesUnvisted(nodes.values())){
-            double lowestCost = Double.POSITIVE_INFINITY;
-            Edge best = null;
             
-            for (Edge e : G.edges) {
-                //System.out.println();
-                
-               // if(visted[e.u] && visted[e.v])continue;
-               if (nodes.get(e.u.key).visted && nodes.get(e.v.key).visted)
-                    continue;
-        ////        System.out.println(e.toString() + " | "+ lowestCost + " | "+ currentNode);
-        ////  System.out.println(((e.u.equals(currentNode))||(e.v.equals(currentNode)))+"" +(!nodes.get(e.u.key).visted||!nodes.get(e.v.key).visted) +""+ (e.cost < lowestCost));
+            //Edge best = null;
+            Edge best[] = findLowestAdjacent(G.edges, nodes, currentNode);
 
-        ////        System.out.println(nodes.get(e.u.key).visted+","+nodes.get(e.v.key).visted);
-        ////        System.out.println(e.u.equals(currentNode) +""+ !nodes.get(e.v.key).visted +""+ (e.cost < lowestCost));
-            ////    System.out.println(e.v.equals(currentNode) +""+ !nodes.get(e.u.key).visted +""+ (e.cost < lowestCost));
-                if (e.u.equals(currentNode) && !nodes.get(e.v.key).visted && e.cost < lowestCost){
-                  //  System.out.println(" ....changes to be made");
-                    best = e;   
-                    lowestCost = e.cost;
-                    
-                }else if(e.v.equals(currentNode) && !nodes.get(e.u.key).visted && e.cost < lowestCost){
-                    best = e;
-                    lowestCost = e.cost;
-                }
+            //find better edge for second node of second edge if possible
+            if (best[1] != null && best[1].u.equals(currentNode)) {
+                best[1] = min(findLowestAdjacent(G.edges, nodes, best[1].v)[0], best[1]);
+            } else if(best[1] != null && best[1].v.equals(currentNode)){
+                best[1] = min(findLowestAdjacent(G.edges, nodes, best[1].u)[0], best[1]);
             }
-            ////System.out.println(best+"<------- best");
+            Edge chosen;
+
+           //! System.out.println((best[0] == null )+"|"+(best[1] == null));
             
-            nodes.get(currentNode.key).visted = true;
-            if(best == null){
-                currentNode = T.get(0).u;
+            if(best[0] != null && best[1] != null){
+                T.addAll(Arrays.asList(best));
+                chosen = min(best[0],best[1]);
+            }else if(best[0] != null){
+                T.add(best[0]);
+                chosen = best[0];
+            }else{
+                currentNode = unvistedNode(nodes.values());
                 continue;
             }
-            T.add(best);
-            if (best.u.equals(currentNode)) {
-                currentNode = best.v;
+         //!   System.out.println(T.toString());
+         //!   System.out.println(chosen+"<------- best");
+            
+            if (chosen.u.equals(currentNode)) {
+                currentNode = chosen.v;
 
-            }else if(best.v.equals(currentNode)){
-                currentNode = best.u;
+            }else if(chosen.v.equals(currentNode)){
+                currentNode = chosen.u;
             }
         }
 
@@ -96,12 +91,75 @@ public final class MST {
         return T;
     }
 
+    //returns lowest cost of two edges
+    private static Edge min(Edge a, Edge b){
+        if(a == null)
+            return b;
+        else if(b == null)
+            return a;
+
+        return a.compareTo(b) <= 0 ? a : b;
+    }
+
+    private static Edge[] findLowestAdjacent(LinkedList<Edge> edges, HashMap <Integer,Node> nodes, Node node){
+        double lowestCost = Double.POSITIVE_INFINITY;
+        byte i = 0;
+        Edge lowest[] = new Edge[2];
+        for (Edge e : edges) {
+            //System.out.println();
+            
+            
+           // if(visted[e.u] && visted[e.v])continue;
+           if (nodes.get(e.u.key).visted && nodes.get(e.v.key).visted)
+                continue;
+         //! System.out.println(e.toString() + " | "+ lowestCost + " | "+ node);
+    ////  System.out.println(((e.u.equals(currentNode))||(e.v.equals(currentNode)))+"" +(!nodes.get(e.u.key).visted||!nodes.get(e.v.key).visted) +""+ (e.cost < lowestCost));
+
+    ////        System.out.println(nodes.get(e.u.key).visted+","+nodes.get(e.v.key).visted);
+    ////        System.out.println(e.u.equals(currentNode) +""+ !nodes.get(e.v.key).visted +""+ (e.cost < lowestCost));
+        ////    System.out.println(e.v.equals(currentNode) +""+ !nodes.get(e.u.key).visted +""+ (e.cost < lowestCost));
+            if ((e.u.equals(node) || e.v.equals(node)) && (!nodes.get(e.v.key).visted && !nodes.get(e.u.key).visted) && e.cost < lowestCost){
+              //  System.out.println(" ....changes to be made");
+                
+                
+               if(lowest[0] != null && lowest[1] != null && lowest[0].cost < lowest[1].cost){
+                    lowest[1] = lowest[0];
+                    lowest[0] = e;
+              } else if (lowest[0] != null && lowest[1] != null){
+                        lowest[1] = e;
+                }else{
+                    lowest[i] = e;   
+                    i++;
+                    if(lowest[0] != null && lowest[1] != null && lowest[0].cost > lowest[1].cost){
+                        lowest[1] = lowest[0];
+                        lowest[0] = e;  
+                    }
+                }
+                if(lowest[1] == null) lowestCost = Double.POSITIVE_INFINITY;
+                else 
+                lowestCost = e.cost;
+
+               //! System.out.println(Arrays.toString(lowest));
+            }
+        }
+
+        nodes.get(node.key).visted = true;  
+        
+        return lowest;
+    }
+
+    //returns whether any nodes in a collection are marked as unvisted
     private static boolean nodesUnvisted(Collection<Node> nodes){
+        return unvistedNode(nodes) == null ? false : true;
+    }
+    
+    //returns a unvisted node in a collection
+    private static Node unvistedNode(Collection<Node> nodes){
         for (Node n : nodes) {
             if (!n.visted)
-                return true;
+                return n;
         }
-        return false;
+        return null;
     }
 
     //Kruskal's algorithm for a MST
@@ -131,6 +189,7 @@ public final class MST {
         return T;
     }
 
+    //Returns total cost of a collection of edges
     private static int totalCost(Collection<Edge> edges){
         int count = 0;
         for (Edge edge : edges) {
@@ -138,12 +197,14 @@ public final class MST {
         }
         return count;
     }
+
     //unionizes two sets
     private static void union(HashMap <Integer,DisjointSet> nodes, int a, int b){
         Node x = find(nodes, a);
         Node y = find(nodes, b);
         nodes.get(x.key).parent = y;
     }
+
     //Finds parent of a node searched by it's key
     private static Node find(HashMap <Integer,DisjointSet> nodes, int key){
         Node parent = nodes.get(key).parent;
