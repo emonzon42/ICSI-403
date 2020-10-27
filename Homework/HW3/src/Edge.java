@@ -27,7 +27,7 @@ public class Edge implements Comparable<Edge>{
 	 * Prints a string representation of the edge
 	 */
 	public String toString() {
-		return "("+u.toString() + "," + v.toString()+ "): "+ cost.toString();
+		return "("+u.toString() + "," + v.toString()+ "|"+ cost.toString()+ ")";
 	}
 	
 	public int compareTo(Edge e) {
