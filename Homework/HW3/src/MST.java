@@ -34,21 +34,15 @@ public final class MST {
     }
     
     //Prim's algorithm for a MST
-    public static Collection<Edge> prim(Graph G){//!Returns a different mst from kruskal (figure out how to throw out edges and replace them with better ones)
+    public static Collection<Edge> prim(Graph G){
         long tick = System.currentTimeMillis();
         HashSet<Edge> T = new HashSet<>();
-     //   PriorityQueue<Node> unvisted = new PriorityQueue<>(G.nodes);
-     //   boolean[] visted = new boolean[G.nodes.size() + unvisted.peek().key];
-     //   double key[] = new double[G.nodes.size() + unvisted.peek().key];
-        //LinkedList<Node> nodes = new LinkedList<>(G.nodes);
         HashMap <Integer,Node> nodes = new HashMap<>();
         
         for (Node n : G.nodes)
             nodes.put(n.key, new Node(n,false));
 
-        //System.out.println(unvisted.toString());
         Node currentNode = nodes.get(G.edges.getFirst().u.key);
-
         while (nodesUnvisted(nodes.values())){
             
             //Edge best = null;
@@ -62,7 +56,7 @@ public final class MST {
             }
             Edge chosen;
 
-           //! System.out.println((best[0] == null )+"|"+(best[1] == null));
+           //// System.out.println((best[0] == null )+"|"+(best[1] == null));
             
             if(best[0] != null && best[1] != null){
                 T.addAll(Arrays.asList(best));
@@ -74,8 +68,8 @@ public final class MST {
                 currentNode = unvistedNode(nodes.values());
                 continue;
             }
-         //!   System.out.println(T.toString());
-         //!   System.out.println(chosen+"<------- best");
+            ////System.out.println(T.toString());
+            ////System.out.println(chosen+"<------- best");
             
             if (chosen.u.equals(currentNode)) {
                 currentNode = chosen.v;
@@ -90,38 +84,19 @@ public final class MST {
         System.out.println("Total cost of edges: " + totalCost(T));
         return T;
     }
-
-    //returns lowest cost of two edges
-    private static Edge min(Edge a, Edge b){
-        if(a == null)
-            return b;
-        else if(b == null)
-            return a;
-
-        return a.compareTo(b) <= 0 ? a : b;
-    }
-
+    
+    // returns two edges of lowest cost coming out of specified node
     private static Edge[] findLowestAdjacent(LinkedList<Edge> edges, HashMap <Integer,Node> nodes, Node node){
         double lowestCost = Double.POSITIVE_INFINITY;
         byte i = 0;
         Edge lowest[] = new Edge[2];
         for (Edge e : edges) {
-            //System.out.println();
             
-            
-           // if(visted[e.u] && visted[e.v])continue;
            if (nodes.get(e.u.key).visted && nodes.get(e.v.key).visted)
                 continue;
-         //! System.out.println(e.toString() + " | "+ lowestCost + " | "+ node);
-    ////  System.out.println(((e.u.equals(currentNode))||(e.v.equals(currentNode)))+"" +(!nodes.get(e.u.key).visted||!nodes.get(e.v.key).visted) +""+ (e.cost < lowestCost));
+    ////    System.out.println(e.toString() + " | "+ lowestCost + " | "+ node);
 
-    ////        System.out.println(nodes.get(e.u.key).visted+","+nodes.get(e.v.key).visted);
-    ////        System.out.println(e.u.equals(currentNode) +""+ !nodes.get(e.v.key).visted +""+ (e.cost < lowestCost));
-        ////    System.out.println(e.v.equals(currentNode) +""+ !nodes.get(e.u.key).visted +""+ (e.cost < lowestCost));
             if ((e.u.equals(node) || e.v.equals(node)) && (!nodes.get(e.v.key).visted && !nodes.get(e.u.key).visted) && e.cost < lowestCost){
-              //  System.out.println(" ....changes to be made");
-                
-                
                if(lowest[0] != null && lowest[1] != null && lowest[0].cost < lowest[1].cost){
                     lowest[1] = lowest[0];
                     lowest[0] = e;
@@ -138,28 +113,13 @@ public final class MST {
                 if(lowest[1] == null) lowestCost = Double.POSITIVE_INFINITY;
                 else 
                 lowestCost = e.cost;
-
-               //! System.out.println(Arrays.toString(lowest));
+         ////       System.out.println(Arrays.toString(lowest));
             }
         }
 
         nodes.get(node.key).visted = true;  
         
         return lowest;
-    }
-
-    //returns whether any nodes in a collection are marked as unvisted
-    private static boolean nodesUnvisted(Collection<Node> nodes){
-        return unvistedNode(nodes) == null ? false : true;
-    }
-    
-    //returns a unvisted node in a collection
-    private static Node unvistedNode(Collection<Node> nodes){
-        for (Node n : nodes) {
-            if (!n.visted)
-                return n;
-        }
-        return null;
     }
 
     //Kruskal's algorithm for a MST
@@ -189,15 +149,6 @@ public final class MST {
         return T;
     }
 
-    //Returns total cost of a collection of edges
-    private static int totalCost(Collection<Edge> edges){
-        int count = 0;
-        for (Edge edge : edges) {
-            count += edge.cost;
-        }
-        return count;
-    }
-
     //unionizes two sets
     private static void union(HashMap <Integer,DisjointSet> nodes, int a, int b){
         Node x = find(nodes, a);
@@ -215,4 +166,38 @@ public final class MST {
             return find(nodes, parent.key);
 
     }
+
+    //Returns total cost of a collection of edges
+    private static int totalCost(Collection<Edge> edges){
+        int count = 0;
+        for (Edge edge : edges) {
+            count += edge.cost;
+        }
+        return count;
+    }
+
+    //returns lowest cost of two edges
+    private static Edge min(Edge a, Edge b){
+        if(a == null)
+            return b;
+        else if(b == null)
+            return a;
+
+        return a.compareTo(b) <= 0 ? a : b;
+    }
+
+    //returns whether any nodes in a collection are marked as unvisted
+    private static boolean nodesUnvisted(Collection<Node> nodes){
+        return unvistedNode(nodes) == null ? false : true;
+    }
+    
+    //returns a unvisted node in a collection
+    private static Node unvistedNode(Collection<Node> nodes){
+        for (Node n : nodes) {
+            if (!n.visted)
+                return n;
+        }
+        return null;
+    }
+        
 }

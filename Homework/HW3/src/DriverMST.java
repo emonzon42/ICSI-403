@@ -8,11 +8,10 @@
 import java.io.*;
 import java.util.Collection;
 public class DriverMST {
-    // cd Homework/HW3 
+    
     //* javac -d "../bin" "DriverMST.java" 
     //* java DriverMST ../infile.txt -e
 
-    private static final String TEST_FILE = "../infile2.txt";
     public static void main(String[] args) {
         
         if (args.length < 1){
