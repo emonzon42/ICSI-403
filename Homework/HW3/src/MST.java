@@ -54,9 +54,7 @@ public final class MST {
             } else if(best[1] != null && best[1].v.equals(currentNode)){
                 best[1] = min(findLowestAdjacent(G.edges, nodes, best[1].u)[0], best[1]);
             }
-            Edge chosen;
-
-           //// System.out.println((best[0] == null )+"|"+(best[1] == null));
+            Edge chosen; //the chosen edge to follow for the next node
             
             if(best[0] != null && best[1] != null){
                 T.addAll(Arrays.asList(best));
@@ -68,8 +66,6 @@ public final class MST {
                 currentNode = unvistedNode(nodes.values());
                 continue;
             }
-            ////System.out.println(T.toString());
-            ////System.out.println(chosen+"<------- best");
             
             if (chosen.u.equals(currentNode)) {
                 currentNode = chosen.v;
@@ -94,7 +90,6 @@ public final class MST {
             
            if (nodes.get(e.u.key).visted && nodes.get(e.v.key).visted)
                 continue;
-    ////    System.out.println(e.toString() + " | "+ lowestCost + " | "+ node);
 
             if ((e.u.equals(node) || e.v.equals(node)) && (!nodes.get(e.v.key).visted && !nodes.get(e.u.key).visted) && e.cost < lowestCost){
                if(lowest[0] != null && lowest[1] != null && lowest[0].cost < lowest[1].cost){
@@ -113,7 +108,6 @@ public final class MST {
                 if(lowest[1] == null) lowestCost = Double.POSITIVE_INFINITY;
                 else 
                 lowestCost = e.cost;
-         ////       System.out.println(Arrays.toString(lowest));
             }
         }
 
